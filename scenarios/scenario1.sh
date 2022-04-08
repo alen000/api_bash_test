@@ -1,16 +1,26 @@
     #!/bin/bash
+    HTTPS_URL="https://gorest.co.in/public/v2/users/3342"
     declare -i br=1;
     destdir=./testCase$br.txt
-    k=0;
-    json=$(curl -i -H "Accept:application/json" -H "Content-Type:application/json" -XGET "https://gorest.co.in/public/v2/users/3342" -s)
-    json1=$(echo $json | sed -e 's/^.*"message":"\([^"]*\)".*$/\1/')
+
+    source ./files/constants.sh
+    source ./files/codes.sh
+    source ./files/check.sh
+
+    json=$(curl -i -H "Accept:application/json" -H "Authorization: Bearer $TOKEN" -H "Content-Type:application/json" -XGET ${HTTPS_URL} -s)
+    json1=$(echo $json | sed -e 's/^.*"name":"\([^"]*\)".*$/\1/')
+    json3=$(echo $json | sed -e 's/^.*"message":"\([^"]*\)".*$/\1/')
+
+    json2="Dhruv Pothuvaal JD"
+    myfunc httpCode
     echo ""
     echo "..................................."
     echo "Scenario $br"
-    echo "Description: Check that user do not exists"
+    echo "Description: Check that user 3342 do not exists"
     echo "..................................."
-    json2="Resource not found"
+    echo "Response is: $httpCode - ${code_response[$httpCode]}"
 
-    if [[ "$json1" == *"message"* ]];then echo "Resource is not found"; echo "Test not past"; exit 1; fi
+    if [[ "$httpCode" -ne "404" && "$json3" -ne "Resource not found" ]];then echo "Resource is found"; echo "Test not past";  else echo "$tests" > "$destdir"; echo "Test past"; exit 1; fi
     if [ -n "$json1" ]; then echo ""; else echo "Input is empty"; echo "Test not past"; exit 1; fi
-    if [ "$json1" = "$json2" ];then echo "Test past"; ((tests= tests+1)); echo "$tests" > "$destdir"; else echo "Data do not match"; echo "Test not past"; exit 1; fi
+    if [ "$json1" = "$json2" ];then echo "Result is not as expected"; echo "$json2 should not be listed"; echo "Test not past"; exit 1; 
+    else echo "Result is not as expected"; echo "$json1 should not be listed"; echo "Test not past"; exit 1; fi
