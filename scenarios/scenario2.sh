@@ -1,4 +1,9 @@
     #!/bin/bash
+    ##
+    ##  Author: Alen Blazevic
+    ##  Create user and check that user created correct
+    ##
+    ##
     HTTPS_URL="https://gorest.co.in/public/v2/users"
     declare -i br=2;
     k=0;

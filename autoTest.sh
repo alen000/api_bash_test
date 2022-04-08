@@ -1,4 +1,9 @@
 #!/bin/sh
+    ##
+    ##  Author: Alen Blazevic
+    ##  Scenario handlers
+    ##
+    ##
 HTTPS_URL="https://gorest.co.in/public/v2/users"
 CURL_CMD="curl -w httpcode=%{http_code}"
 log_file="logs/test_result.log"

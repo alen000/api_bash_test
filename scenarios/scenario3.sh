@@ -1,4 +1,9 @@
     #!/bin/bash
+    ##
+    ## Author: Alen Blazevic
+    ##  Create user and delete user
+    ##
+    ##
     HTTPS_URL="https://gorest.co.in/public/v2/users"
     declare -i br=3;
     k=0;

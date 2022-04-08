@@ -1,4 +1,9 @@
     #!/bin/bash
+    ##
+    ##  Author: Alen Blazevic
+    ##  Check that user not exist
+    ##
+    ##
     HTTPS_URL="https://gorest.co.in/public/v2/users/3342"
     declare -i br=1;
     destdir=./testCase$br.txt
