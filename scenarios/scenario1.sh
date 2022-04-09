@@ -12,7 +12,8 @@
     source ./files/codes.sh
     source ./files/check.sh
 
-    json=$(curl -i -H "Accept:application/json" -H "Authorization: Bearer $TOKEN" -H "Content-Type:application/json" -XGET ${HTTPS_URL} -s)
+    json=$(curl -i -H "Accept:application/json" -H "Authorization: Bearer $TOKEN" -H "Content-Type:application/json" -XGET $HTTPS_URL -s)
+    myfunc httpCode ## httpcode check
     json1=$(echo $json | sed -e 's/^.*"name":"\([^"]*\)".*$/\1/')
     json3=$(echo $json | sed -e 's/^.*"message":"\([^"]*\)".*$/\1/')
 
@@ -21,7 +22,7 @@
     echo ""
     echo "..................................."
     echo "Scenario $br"
-    echo "Description: Check that user 3342 do not exists"
+    echo "Description: Check that user with id 3342 do not exists"
     echo "..................................."
     echo "Response is: $httpCode - ${code_response[$httpCode]}"
 
