@@ -21,6 +21,13 @@ if [ ${CURL_RETURN_CODE} -ne 0 ]; then
     echo "Curl connection failed with return code - ${CURL_RETURN_CODE}"
     
 else
+    if [ -d "./logs/" ] 
+      then
+      echo "Directory logs exists." 
+      else
+      mkdir logs
+    fi
+
     echo "Curl connection is success with ${httpCode} - ${code_response[$httpCode]}"
     cd scenarios
     t=$(ls 2>/dev/null -Ubad1 -- scenario* | wc -l)
@@ -31,7 +38,10 @@ else
     declare -i zero=0;
     while [ $i -le $t ]
     do
-       sh ./scenarios/scenario$i.sh
+
+       if [ -f ./scenarios/scenario$i.sh ]; then
+         sh ./scenarios/scenario$i.sh
+       fi
        i=i+1
     done
 
