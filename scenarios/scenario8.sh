@@ -12,6 +12,6 @@
     echo "..................................."
  
 
-    if [[ "$json1" == *"message"* ]];then echo "Resource is not found"; echo "Test not past"; exit 1; fi
-    if [ -n "$json1" ]; then echo ""; else echo "Input is empty"; echo "Test not past"; exit 1; fi
-    if [ "$json1" = "$json2" ];then echo "Test past"; ((tests= tests+1)); echo "$tests" > "$destdir"; else echo "Data do not match"; echo "Test not past"; exit 1; fi
+    if [[ "$json1" == *"message"* ]];then echo "Resource is not found"; echo "Test not passed"; exit 1; fi
+    if [ -n "$json1" ]; then echo ""; else echo "Input is empty"; echo "Test not passed"; exit 1; fi
+    if [ "$json1" = "$json2" ];then echo "Test passed"; ((tests= tests+1)); echo "$tests" > "$destdir"; else echo "Data do not match"; echo "Test not passed"; exit 1; fi

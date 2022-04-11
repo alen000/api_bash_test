@@ -26,7 +26,7 @@
     echo "..................................."
     echo "Response is: $httpCode - ${code_response[$httpCode]}"
 
-    if [[ "$httpCode" -ne "404" && "$json3" -ne "Resource not found" ]];then echo "Resource is found"; echo "Test not past";  else echo "$tests" > "$destdir"; echo "Test past"; exit 1; fi
-    if [ -n "$json1" ]; then echo ""; else echo "Input is empty"; echo "Test not past"; exit 1; fi
-    if [ "$json1" = "$json2" ];then echo "Result is not as expected"; echo "$json2 should not be listed"; echo "Test not past"; exit 1; 
-    else echo "Result is not as expected"; echo "$json1 should not be listed"; echo "Test not past"; exit 1; fi
+    if [[ "$httpCode" -ne "404" && "$json3" -ne "Resource not found" ]];then echo "Resource is found, not OK"; else echo "$tests" > "$destdir"; echo "404 is received"; fi
+    if [ -n "$json1" ]; then echo ""; else echo "Input is empty"; echo "Test not passed"; exit 1; fi
+    if [ "$json1" = "$json2" ];then echo "Result is not as expected"; echo "$json2 should not be listed"; echo "Test not passed"; exit 1; 
+    else echo "Result is not as expected"; echo "$json1 should not be listed"; echo "Test not passed"; exit 1; fi

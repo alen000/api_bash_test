@@ -40,7 +40,7 @@ else
     do
 
        if [ -f ./scenarios/scenario$i.sh ]; then
-         sh ./scenarios/scenario$i.sh
+            sh ./scenarios/scenario$i.sh
        fi
        i=i+1
     done
@@ -53,9 +53,9 @@ else
     
        a=$(ls 2>/dev/null -Ubad1 -- testC* | wc -l)
        if [ $a -eq $zero ]; then
-          echo "All test cases not past, sorry"                  | tee -a "$log_file"
+          echo "All test cases not passed, sorry"                  | tee -a "$log_file"
        else
-       echo "Listed past test cases"                             | tee -a "$log_file"
+       echo "Listed passed test cases"                             | tee -a "$log_file"
           ls testC* | sed -e 's/\.txt$//'                        | tee -a "$log_file"
        fi
     echo "-----------------------------------------------------" | tee -a "$log_file"
