@@ -14,8 +14,8 @@
 
     json=$(curl -i -H "Accept:application/json" -H "Authorization: Bearer $TOKEN" -H "Content-Type:application/json" -XGET $HTTPS_URL -s)
     myfunc httpCode ## httpcode check
-    json1=$(echo $json | sed -e 's/^.*"name":"\([^"]*\)".*$/\1/')
-    json3=$(echo $json | sed -e 's/^.*"message":"\([^"]*\)".*$/\1/')
+    json1=$(echo $json | grep name | sed -e 's/^.*"name":"\([^"]*\)".*$/\1/')
+    json3=$(echo $json | grep message | sed -e 's/^.*"message":"\([^"]*\)".*$/\1/')
 
     json2="Dhruv Pothuvaal JD"
     myfunc httpCode
@@ -26,7 +26,7 @@
     echo "..................................."
     echo "Response is: $httpCode - ${code_response[$httpCode]}"
 
-    if [[ "$httpCode" -ne "404" && "$json3" -ne "Resource not found" ]];then echo "Resource is found, not OK"; else echo "$tests" > "$destdir"; echo "404 is received"; fi
-    if [ -n "$json1" ]; then echo ""; else echo "Input is empty"; echo "Test not passed"; exit 1; fi
-    if [ "$json1" = "$json2" ];then echo "Result is not as expected"; echo "$json2 should not be listed"; echo "Test not passed"; exit 1; 
-    else echo "Result is not as expected"; echo "$json1 should not be listed"; echo "Test not passed"; exit 1; fi
+    echo $json1
+    if [[ "$httpCode" -ne "404" && "$json3" -ne "Resource not found" ]];then echo "Resource is found, not OK"; else  echo "404 is received and user is not found"; fi
+    if [ -z "$json1" ]; then echo "Result is expected and name is empty";  else echo "Name is not empty and not OK"; fi
+    if [ "$json1" = "$json2" ];then echo "Result is not as expected"; echo "$json2 should not be listed"; echo "Test not passed"; exit 1; else echo "$tests" > "$destdir"; echo "Test passed"; fi

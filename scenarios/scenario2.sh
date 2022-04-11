@@ -35,13 +35,13 @@
     HTTPS_URL="https://gorest.co.in/public/v2/users/${json5}"
     json10=$(curl -i -H "Accept:application/json" -H "Authorization: Bearer $TOKEN" -XGET  $HTTPS_URL -L -s)
 
-    json11=$(echo $json10 | sed -e 's/^.*"name":"\([^"]*\)".*$/\1/')
-    json13=$(echo $json10 | sed -e 's/^.*"message":"\([^"]*\)".*$/\1/')
+    json11=$(echo $json10 | grep name | sed -e 's/^.*"name":"\([^"]*\)".*$/\1/')
+    json13=$(echo $json10 | grep message | sed -e 's/^.*"message":"\([^"]*\)".*$/\1/')
     myfunc httpCode ## httpcode check
     echo "Check that user exist"
 
     echo "Response is: $httpCode - ${code_response[$httpCode]}"
-    if [[ "$httpCode" -ne "200" ]];then echo "User do not exist"; echo "Test is not OK"; else echo "User exist"; fi
-    if [ -n "$json11" ]; then echo "Input is empty"; echo "Test not passed"; exit 1; fi
-    if [[ "$json11" == "$json2" && -n "$json13" ]];then echo "$json11 is listed"; echo "Test passed"; echo "$tests" > "$destdir"; 
-    else echo "User do not exist"; echo "Test not passed"; exit 1; fi
+    if [[ "$httpCode" -ne "200" ]];then echo "User do not exist and it's not OK"; else echo "User exist, it's OK"; fi
+    if [ -z "$json11" ]; then echo "Name is empty and not OK"; fi
+    if [[ "$json11" == "$json2" && -z "$json13" ]];then echo "$json11 is listed"; echo "Test passed"; echo "$tests" > "$destdir"; 
+    else echo "User do not exist"; echo "Test not passed"; fi

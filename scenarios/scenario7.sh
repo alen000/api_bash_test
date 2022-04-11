@@ -46,14 +46,14 @@
     HTTPS_URL="https://gorest.co.in/public/v2/users/${json5}"
     json21=$(curl -i -H "Accept:application/json" -H "Authorization: Bearer $TOKEN" -H "Content-Type:application/json" -XGET  ${HTTPS_URL} -s)
     myfunc httpCode ## httpcode check
-    json22=$(echo $json21 | sed -e 's/^.*"name":"\([^"]*\)".*$/\1/')
-    json23=$(echo $json21 | sed -e 's/^.*"message":"\([^"]*\)".*$/\1/')
+    json22=$(echo $json21 | grep name | sed -e 's/^.*"name":"\([^"]*\)".*$/\1/')
+    json23=$(echo $json21 | grep message | sed -e 's/^.*"message":"\([^"]*\)".*$/\1/')
     echo ""
     echo "..................................."
     echo "Check user"
     echo "Response is: $httpCode - ${code_response[$httpCode]}"
 
     if [[ "$httpCode" -ne "404" ]];then echo "User is found"; echo "Test not passed";  else echo "User is not found"; fi
-    if [[ -n "$json22" && -n "$json23" ]]; then echo ""; else echo "Input is empty"; echo "Test not passed"; exit 1; fi
+    if [[ -z "$json22" && -n "$json23" ]]; then echo ""; else echo "Input is empty"; echo "Test not passed"; exit 1; fi
     if [[ "$json22" == "$json2" && "$json23" != "Resource not found" ]];then echo "Result is not as expected"; echo "$json22 should not be listed"; exit 1; 
     else echo "Test passed"; echo "$tests" > "$destdir"; fi
