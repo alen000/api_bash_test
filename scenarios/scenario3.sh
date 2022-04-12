@@ -21,7 +21,6 @@
 
     myfunc httpCode ## httpcode check
 
-    json3=$(echo $json | sed -e 's/^.*"message":"\([^"]*\)".*$/\1/')
     json4=$(echo $json | grep id | sed "s/{.*\"id\":\\([^\]*\).*}/\1/g")
     json5=${json4:0:4}
 
@@ -34,7 +33,8 @@
     echo "Create user"
 
     echo "Response is: $httpCode - ${code_response[$httpCode]}"
-    if [[ "$httpCode" -ne "200" ]];then echo "User not is created"; echo "Test not past";  exit 1; else echo "User is created"; fi
+    if [[ "$httpCode" -ne "200" ]];then echo "User not is created ... NOK"; else ((k=k+1)); echo "User is created ... OK"; fi
+    if [[ "$k" -lt "1" ]];then echo "Test not passed"; exit 1; fi
 
     HTTPS_URL="https://gorest.co.in/public/v2/users/${json5}"
     delete httpCode ## httpcode check
@@ -42,7 +42,8 @@
     echo "Delete user"
     echo "Response is: $httpCode - ${code_response[$httpCode]}"
 
-    if [[ "$httpCode" -ne "204" ]];then echo "User is not DELETED"; exit 1; else echo "User is DELETED"; fi
+    if [[ "$httpCode" -ne "204" ]];then echo "User is not DELETED ... NOK"; else ((k=k+1)); echo "User is DELETED ... OK"; fi
+    if [[ "$k" -lt "2" ]];then echo "Test not passed"; exit 1; fi
     sleep 1
 
     HTTPS_URL="https://gorest.co.in/public/v2/users/${json5}"
@@ -53,8 +54,11 @@
     echo "..................................."
     echo "Check user"
     echo "Response is: $httpCode - ${code_response[$httpCode]}"
-
-    if [[ "$httpCode" -ne "404" ]];then echo "User is found and it' not OK"; else echo "User is not found as expected"; fi
-    if [[ -z "$json22" ]]; then echo "Name input is empty as expected"; fi
-    if [[ "$json22" == "$json2" ]];then echo "Result is not as expected"; echo "$json22 should not be listed"; fi
-    if [[ "$json23" != "Resource not found" ]];then echo "Resource not found is missing and it' not OK"; else echo "Test  passed"; echo "$tests" > "$destdir"; fi
+    
+    if [[ -z "$httpCode" ]]; then echo "Http code is empty ...NOK"; echo "Test not passed"; exit 1;else ((k=k+1)); echo "Http code is not empty ...OK"; fi
+    if [[ -z "$json22" ]]; then echo "Name input is empty ... OK"; ((k=k+1));else echo "Name input is not empty ... NOK";fi
+    if [[ -z "$json23" ]]; then echo "Response 'Not found' is empty ... NOK"; else ((k=k+1)); echo "Response 'Not found' is not empty ... OK"; fi
+    if [[ "$httpCode" -ne "404" ]];then echo "User is found and ... NOK"; else ((k=k+1)); echo "User is not found ... OK"; fi
+    if [[ "$json22" = "$json2" ]];then echo "$json22 should not be listed ... NOK"; else ((k=k+1)); echo "$json2 is not listed ... OK"; fi
+    if [[ "$json23" != "Resource not found" ]];then echo "Response -Resource not found - is missing ... NOK"; else ((k=k+1)); echo "Response -Resource not found - exists ... OK"; fi
+    if [[ "$k" == "8" ]];then echo "Test passed"; echo "$tests" > "$destdir"; else echo "Test not passed"; fi

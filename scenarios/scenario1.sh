@@ -25,8 +25,10 @@
     echo "Description: Check that user with id 3342 do not exists"
     echo "..................................."
     echo "Response is: $httpCode - ${code_response[$httpCode]}"
+    
+    if [[ -z "$httpCode" ]]; then echo "Http code is empty ...NOK"; echo "Test not passed"; exit 1;else ((k=k+1)); echo "Http code is not empty ...OK"; fi
+    if [ -z "$json1" ]; then echo "Name is empty ... OK";  ((k=k+1)); else echo "Name exists ... NOK"; fi
+    if [ -z "$json3" ]; then echo "Response -Not found - is empty ... NOK"; else  ((k=k+1)); echo "Response  -Not found - exists ... OK"; fi
+    if [[ "$httpCode" -ne "404" && "$json3" -ne "Resource not found" ]];then echo "User is found ... NOK"; else ((k=k+1));echo "404 is received and user is not found ... OK";fi
+    if [[ "$k" == "4" ]];then echo "Test passed"; echo "$tests" > "$destdir"; else echo "Test not passed"; fi
 
-    echo $json1
-    if [[ "$httpCode" -ne "404" && "$json3" -ne "Resource not found" ]];then echo "Resource is found, not OK"; else  echo "404 is received and user is not found"; fi
-    if [ -z "$json1" ]; then echo "Result is expected and name is empty";  else echo "Name is not empty and not OK"; fi
-    if [ "$json1" = "$json2" ];then echo "Result is not as expected"; echo "$json2 should not be listed"; echo "Test not passed"; exit 1; else echo "$tests" > "$destdir"; echo "Test passed"; fi
