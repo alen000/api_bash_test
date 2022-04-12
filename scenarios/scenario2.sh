@@ -30,8 +30,10 @@
     echo "Create user"
 
     echo "Response is: $httpCode - ${code_response[$httpCode]}"
-    if [[ "$httpCode" -ne "200" ]];then echo "User is not created... NOK";  else echo "User is created ... OK"; ((k=k+1)); fi
-    if [[ "$k" -lt "1" ]];then echo "Test not passed"; exit 1; fi
+    if [ -z "$json3" ]; then echo "Negative response not exists ... OK"; ((k=k+1)); else echo "Negative response exists ... NOK"; fi
+    if [ -z "$json5" ]; then echo "Id is empty ... NOK"; else  ((k=k+1)); echo "Id is not empty ... OK"; fi
+    if [[ "$httpCode" -ne "200" ]];then echo "User $json2 is not created... NOK";  else echo "User $json2 is created ... OK"; ((k=k+1)); fi
+    if [[ "$k" -lt "3" ]];then echo "Test not passed"; exit 1; fi
     echo ".........."
     HTTPS_URL="https://gorest.co.in/public/v2/users/${json5}"
     json10=$(curl -i -H "Accept:application/json" -H "Authorization: Bearer $TOKEN" -XGET  $HTTPS_URL -L -s)
@@ -41,10 +43,10 @@
     myfunc httpCode ## httpcode check
     echo "Check that user exist"
 
-    echo "Response is: $httpCode - ${code_response[$httpCode]}"
+    ##echo "Response is: $httpCode - ${code_response[$httpCode]}"
     if [ -z "$httpCode" ]; then echo "Http code is empty ...NOK"; echo "Test not passed"; exit 1;else ((k=k+1)); echo "Http code is not empty ...OK"; fi
     if [ -z "$json11" ]; then echo "Name is empty ... NOK"; else  ((k=k+1)); echo "User name is not empty ... OK"; fi
     if [ -z "$json13" ]; then echo "Response - Not found - is empty ... OK";  ((k=k+1)); else echo "Response - Not found - is not empty ... NOK"; fi
-    if [[ "$httpCode" -ne "200" ]];then echo "User do not exists ... NOK"; else  ((k=k+1)); echo "User exists ... OK"; fi
+    if [[ "$httpCode" -ne "200" ]];then echo "Response is : $httpCode - ${code_response[$httpCode]} ... NOK"; else  ((k=k+1)); echo "Response is : $httpCode - ${code_response[$httpCode]} ... OK"; fi
     if [[ "$json11" == "$json2" ]];then echo "$json11 is listed.... OK";  ((k=k+1)); else echo "$json2 do not exist ... NOK"; fi
-    if [[ "$k" == "6" ]];then echo "Test passed"; echo "$tests" > "$destdir"; else echo "Test not passed"; fi
+    if [[ "$k" == "8" ]];then echo "Test passed"; echo "$tests" > "$destdir"; else echo "Test not passed"; fi

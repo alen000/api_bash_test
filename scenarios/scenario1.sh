@@ -4,7 +4,7 @@
     ##  Check that user not exist
     ##
     ##
-    HTTPS_URL="https://gorest.co.in/public/v2/users/3342"
+    HTTPS_URL="https://gorest.co.in/public/v2/users/33425"
     declare -i br=1;
     destdir=./testCase$br.txt
 
@@ -24,11 +24,11 @@
     echo "Scenario $br"
     echo "Description: Check that user with id 3342 do not exists"
     echo "..................................."
-    echo "Response is: $httpCode - ${code_response[$httpCode]}"
+   ## echo "Response is: $httpCode - ${code_response[$httpCode]}"
     
     if [[ -z "$httpCode" ]]; then echo "Http code is empty ...NOK"; echo "Test not passed"; exit 1;else ((k=k+1)); echo "Http code is not empty ...OK"; fi
     if [ -z "$json1" ]; then echo "Name is empty ... OK";  ((k=k+1)); else echo "Name exists ... NOK"; fi
     if [ -z "$json3" ]; then echo "Response -Not found - is empty ... NOK"; else  ((k=k+1)); echo "Response  -Not found - exists ... OK"; fi
-    if [[ "$httpCode" -ne "404" && "$json3" -ne "Resource not found" ]];then echo "User is found ... NOK"; else ((k=k+1));echo "404 is received and user is not found ... OK";fi
+    if [[ "$httpCode" -ne "404" ]];then echo "Response is :$httpCode - ${code_response[$httpCode]} ... NOK";else  ((k=k+1)); echo "Response is :$httpCode - ${code_response[$httpCode]} ... OK"; fi
     if [[ "$k" == "4" ]];then echo "Test passed"; echo "$tests" > "$destdir"; else echo "Test not passed"; fi
 
